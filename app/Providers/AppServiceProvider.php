@@ -6,6 +6,10 @@ use Filament\Facades\Filament;
 use Filament\Support\Facades\FilamentView;
 use Illuminate\Support\Facades\Blade;
 use Illuminate\Support\ServiceProvider;
+use Illuminate\Auth\Events\Failed;
+use Illuminate\Auth\Events\Login;
+use App\Listeners\HandleUserLoginAttempts;
+use Illuminate\Support\Facades\Event;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -46,5 +50,8 @@ class AppServiceProvider extends ServiceProvider
                 </div>
             ')
         );
+
+        Event::listen(Failed::class, HandleUserLoginAttempts::class);
+        Event::listen(Login::class, HandleUserLoginAttempts::class);
     }
 }
